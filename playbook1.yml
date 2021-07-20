@@ -1,0 +1,19 @@
+
+---
+- name: setup docker on pods
+  hosts: kuber_nodes
+  become: yes
+
+
+  vars:
+    source_file: ./daemon.json
+    destin_file: /etc/docker/
+
+
+  tasks:
+  - name: copy daemon.json
+    copy: src={{ source_file }} dest={{ destin_file }} mode=777
+    
+  
+  - name: restart docker 
+    service: name=docker state=restarted

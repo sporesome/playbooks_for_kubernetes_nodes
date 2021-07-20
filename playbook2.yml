@@ -1,0 +1,22 @@
+
+---
+- name: setup docker on pods
+  hosts: kuber_nodes
+  become: yes
+
+
+  vars:
+    source_file: ./daemon.json
+    destin_file: /etc/docker/
+
+
+  tasks:
+  - name: keyring1
+    ansible.builtin.shell: sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+
+  - name: apt-get update
+    ansible.builtin.shell: apt-get update
+ 
+  - name: install kubelet kubeadm kubectl
+    ansible.builtin.shell: apt-get install -y kubelet kubeadm kubectl && sudo apt-mark hold kubelet kubeadm kubectl
