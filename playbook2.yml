@@ -1,13 +1,8 @@
 
 ---
-- name: setup docker on pods
+- name: install kubelet kubeadm kubectl
   hosts: kuber_nodes
   become: yes
-
-
-  vars:
-    source_file: ./daemon.json
-    destin_file: /etc/docker/
 
 
   tasks:
@@ -18,5 +13,5 @@
   - name: apt-get update
     ansible.builtin.shell: apt-get update
  
-  - name: install kubelet kubeadm kubectl
+  - name: install and hold kubelet kubeadm kubectl 
     ansible.builtin.shell: apt-get install -y kubelet kubeadm kubectl && sudo apt-mark hold kubelet kubeadm kubectl
